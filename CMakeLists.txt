@@ -4,6 +4,8 @@ project(chip8emu LANGUAGES C)
 set(SOURCES
     src/main.c
     src/state.c
+    src/cpu.c
+    src/instructions.c
 )
 
 add_executable(chip8emu ${SOURCES})

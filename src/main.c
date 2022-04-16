@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cpu.h"
 #include "state.h"
 
 void print_help(const char* program_name)
@@ -20,6 +21,10 @@ int main(int argc, char** argv)
     State state;
 
     initialize_game_state(&state, argv[1]);
+
+    for (;;) {
+        execute_next_instruction(&state);
+    }
 
     return EXIT_SUCCESS;
 }
