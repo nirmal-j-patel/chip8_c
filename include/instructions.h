@@ -4,8 +4,7 @@
 #include "state.h"
 #include <sys/types.h>
 
-enum RegisterOperation
-{
+enum RegisterOperation {
     ASSIGN,
     OR,
     AND,
@@ -17,37 +16,52 @@ enum RegisterOperation
     SHL,
 };
 
-void clear_screen(State *state);
+// 00EE
+void clear_screen(State* state);
 
-void jump_to_location(State *state, u_int16_t address);
+// 1nnn
+void jump_to_location(State* state, u_int16_t address);
 
-void call_subroutine(State *state, u_int16_t address);
+// 2nnn, Bnnn
+void call_subroutine(State* state, u_int16_t address);
 
-void skip_next_instruction(State *state);
+// 3xkk, 4xkk, 5xy0, 9xy0, Ex9E, ExA1
+void skip_next_instruction(State* state);
 
-void set_register_value(State *state, u_int8_t register, u_int8_t value);
+// 6xkk
+void set_register_number_value(State* state, u_int8_t register_number, u_int8_t value);
 
-void add_register_value(State *state, u_int8_t register, u_int8_t value);
+// 7xkk
+void add_register_number_value(State* state, u_int8_t register_number, u_int8_t value);
 
-void manipulate_register_using_another_register(State *state, u_int8_t vx, u_int8_t vy, enum RegisterOperation operation);
+// 8xy0, 8xy1, 8xy2, 8xy3, 8xy4, 8xy5, 8xy6, 8xy7, 8xyE
+void manipulate_register_number_using_another_register_number(State* state, u_int8_t vx, u_int8_t vy, enum RegisterOperation operation);
 
-void set_register_I(State *state, u_int16_t value);
+// Annn
+void set_register_I_to_value(State* state, u_int16_t value);
 
-void bitwise_and_value_with_random_byte(State *state, u_int8_t register, u_int8_t value);
+// Cxkk
+void bitwise_and_value_with_random_byte(State* state, u_int8_t register_number, u_int8_t value);
 
-void draw(State *state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length);
+// Dxyn
+void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length);
 
-void get_delay_timer_to_register(State *state, u_int8_t register);
+// Fx07
+void get_delay_timer_to_register_number(State* state, u_int8_t register_number);
 
-void assign_keypress_value_to_register(State *state, u_int8_t register);
+// Fx0A
+void assign_keypress_value_to_register_number(State* state, u_int8_t register_number);
 
-void set_delay_timer_from_register(State *state, u_int8_t register);
+// Fx15
+void set_delay_timer_from_register_number(State* state, u_int8_t register_number);
 
-void set_sound_timer_from_register(State *state, u_int8_t register);
+// Fx18
+void set_sound_timer_from_register_number(State* state, u_int8_t register_number);
 
-void add_register_to_I(State *state, u_int8_t register);
+// Fx1E
+void add_register_number_to_I(State* state, u_int8_t register_number);
 
-void set_I_to_register_digit_location(State *state, u_int8_t register);
-
+// Fx1E
+void set_I_to_register_number_digit_location(State* state, u_int8_t register_number);
 
 #endif

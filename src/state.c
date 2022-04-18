@@ -14,7 +14,7 @@ void initialize_game_state(State* state, char* filepath)
 
     load_rom(state->memory, filepath);
 
-    state->PC = 513;
+    state->PC = 512;
     state->I = 0;
     state->SP = 0;
     state->DT = 0;
@@ -35,7 +35,7 @@ void load_rom(u_int8_t* memory, char* filepath)
 
     assert(file_size <= max_allowed_rom_size);
 
-    fread(memory + 513, file_size, 1, file);
+    fread(memory + 512, file_size, 1, file);
 
     fclose(file);
 }
