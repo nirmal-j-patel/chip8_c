@@ -78,16 +78,14 @@ void execute_next_instruction(State* state)
 
     // SE Vx, byte - skip next instruction if Vx == kk
     case 0x3:
-        if (state->registers[nibble2] == byte2)
-        {
+        if (state->registers[nibble2] == byte2) {
             skip_next_instruction(state);
         }
         break;
 
     // SNE Vx, byte - skip next instruction if Vx != kk
     case 0x4:
-        if (state->registers[nibble2] != byte2)
-        {
+        if (state->registers[nibble2] != byte2) {
             skip_next_instruction(state);
         }
         break;
@@ -95,8 +93,7 @@ void execute_next_instruction(State* state)
     // SE Vx, Vy - skip next instruction if Vx == Vy
     case 0x5:
         assert(nibble4 == 0);
-        if (state->registers[nibble2] == state->registers[nibble3])
-        {
+        if (state->registers[nibble2] == state->registers[nibble3]) {
             skip_next_instruction(state);
         }
         break;
@@ -111,7 +108,7 @@ void execute_next_instruction(State* state)
         add_register_number_value(state, nibble2, byte2);
         break;
 
-    case 0x8:
+    case 0x8: {
         enum RegisterOperation operation;
         switch (nibble4) {
         // LD Vx, Vy - set Vx = Vy
@@ -164,13 +161,12 @@ void execute_next_instruction(State* state)
             break;
         }
         manipulate_register_number_using_another_register_number(state, nibble2, nibble3, operation);
-        break;
+    } break;
 
     // SNE Vx, Vy - skip next instruction if Vx != Vy
     case 0x9:
         assert(nibble4 == 0);
-        if (state->registers[nibble2] != state->registers[nibble3])
-        {
+        if (state->registers[nibble2] != state->registers[nibble3]) {
             skip_next_instruction(state);
         }
         break;

@@ -5,11 +5,11 @@
 #include <sys/types.h>
 
 #ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 
 #ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
 void clear_screen(State* state)
@@ -60,7 +60,7 @@ void manipulate_register_number_using_another_register_number(State* state, u_in
     case OR:
         result = vx_value | vy_value;
         break;
-    
+
     case AND:
         result = vx_value & vy_value;
         break;
@@ -73,7 +73,7 @@ void manipulate_register_number_using_another_register_number(State* state, u_in
         // TODO: set VF = carry
         result = vx_value + vy_value;
         break;
-    
+
     case SUB:
         // TODO: set VF = NOT borrow
         result = vx_value - vy_value;
@@ -122,15 +122,13 @@ void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
         u_int8_t byte = state->memory[state->I + i];
         u_int8_t bits[8];
 
-        for (int j = 0; j < 8; j++)
-        {
+        for (int j = 0; j < 8; j++) {
             bits[j] = (byte >> (8 - j - 1)) & 0x1;
         }
 
-        const u_int8_t pixels_to_draw = min(8, 63-vx_val);
+        const u_int8_t pixels_to_draw = min(8, 63 - vx_val);
 
-        for (int j = 0; j < pixels_to_draw; j++)
-        {
+        for (int j = 0; j < pixels_to_draw; j++) {
             state->display[current_pixel++] ^= bits[j];
         }
     }
