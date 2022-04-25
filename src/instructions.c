@@ -1,4 +1,5 @@
 #include "instructions.h"
+#include "state.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +15,8 @@
 
 void clear_screen(State* state)
 {
-    // TODO: remove system function
-    system("clear");
+    memset(state->display, 0, 64 * 32);
+    repaint_screen(state);
 }
 
 void jump_to_location(State* state, u_int16_t address)
@@ -110,9 +111,6 @@ void bitwise_and_value_with_random_byte(State* state, u_int8_t register_number, 
 
 void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
 {
-    // TODO: remove system function
-    system("clear");
-
     const u_int8_t vx_val = state->registers[vx] % 64;
     const u_int8_t vy_val = state->registers[vy] % 32;
 
@@ -133,16 +131,7 @@ void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
         }
     }
 
-    for (int row = 0; row < 32; row++) {
-        for (int col = 0; col < 64; col++) {
-            if (state->display[row * 64 + col]) {
-                printf("■");
-            } else {
-                printf(" ");
-            }
-        }
-        printf("\n");
-    }
+    repaint_screen(state);
 }
 
 void get_delay_timer_to_register_number(State* state, u_int8_t register_number)

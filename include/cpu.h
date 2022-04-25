@@ -12,6 +12,6 @@ void parse_instruction_into_bytes(u_int16_t instruction, u_int8_t* b1, u_int8_t*
 
 u_int16_t get_last_three_nibbles(u_int16_t instruction);
 
-void execute_next_instruction(State* state);
+int execute_next_instruction(State* state);
 
 #endif

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <sys/types.h>
 
+#include "SDL_events.h"
 #include "cpu.h"
 #include "instructions.h"
 
@@ -36,7 +37,7 @@ u_int16_t get_last_three_nibbles(u_int16_t instruction)
     return instruction & 0x0FFF;
 }
 
-void execute_next_instruction(State* state)
+int execute_next_instruction(State* state)
 {
     const u_int16_t next_instruction = fetch_next_instruction(state);
 
@@ -247,4 +248,16 @@ void execute_next_instruction(State* state)
         printf("Unknown instruction\n");
         break;
     }
+
+        SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+        {
+            return SDL_QUIT;
+        }
+    }
+
+    return 0;
 }

@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <SDL2/SDL.h>
+
+#include "SDL_events.h"
 #include "cpu.h"
 #include "state.h"
 
@@ -22,9 +25,12 @@ int main(int argc, char** argv)
 
     initialize_game_state(&state, argv[1]);
 
-    for (;;) {
-        execute_next_instruction(&state);
+    int close = 0;
+    while (close != SDL_QUIT) {
+        close = execute_next_instruction(&state);
     }
+
+    destroy_state(&state);
 
     return EXIT_SUCCESS;
 }
