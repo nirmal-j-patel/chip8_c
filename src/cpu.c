@@ -76,6 +76,7 @@ int execute_next_instruction(State* state)
 
     // CALL addr - call subroutine at address
     case 0x2:
+        call_subroutine(state, last_three_nibbles);
         break;
 
     // SE Vx, byte - skip next instruction if Vx == kk
