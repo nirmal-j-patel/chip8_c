@@ -59,6 +59,7 @@ int execute_next_instruction(State* state)
 
         // RET - return from a subroutine
         case 0x00EE:
+            return_subroutine(state);
             break;
 
         // SYS addr - ignored for now

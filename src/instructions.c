@@ -27,6 +27,16 @@ void jump_to_location(State* state, u_int16_t address)
 
 void call_subroutine(State* state, u_int16_t address)
 {
+    state->stack[state->SP] = state->PC;
+    state->SP++;
+    state->PC = address;
+}
+
+void return_subroutine(State *state)
+{
+    state->SP--;
+    state->PC = state->stack[state->SP];
+    skip_next_instruction(state);
 }
 
 void skip_next_instruction(State* state)

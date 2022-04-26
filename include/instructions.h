@@ -16,8 +16,11 @@ enum RegisterOperation {
     SHL,
 };
 
-// 00EE
+// 00E0
 void clear_screen(State* state);
+
+// 00EE
+void return_subroutine(State* state);
 
 // 1nnn
 void jump_to_location(State* state, u_int16_t address);
