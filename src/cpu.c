@@ -186,6 +186,7 @@ int execute_next_instruction(State* state)
 
     // RND vx, byte - set Vx = random byte AND kk
     case 0xC:
+        bitwise_and_value_with_random_byte(state, nibble2, byte2);
         break;
 
     // DRW Vx, Vy, nibble - Display n-byte sprite starting at memory location I

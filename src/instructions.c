@@ -117,6 +117,9 @@ void set_register_I_to_value(State* state, u_int16_t value)
 
 void bitwise_and_value_with_random_byte(State* state, u_int8_t register_number, u_int8_t value)
 {
+    const u_int8_t random_byte = rand() % 256;
+
+    state->registers[register_number] = random_byte & value;
 }
 
 void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <SDL2/SDL.h>
 
@@ -20,6 +21,8 @@ int main(int argc, char** argv)
     if (argc != 2) {
         print_help(argv[0]);
     }
+
+    srand(time(NULL));
 
     State state;
 
