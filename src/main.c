@@ -8,6 +8,8 @@
 #include "cpu.h"
 #include "state.h"
 
+#include <unistd.h>
+
 void print_help(const char* program_name)
 {
     printf("USAGE:\n");
@@ -31,6 +33,7 @@ int main(int argc, char** argv)
     int close = 0;
     while (close != SDL_QUIT) {
         close = execute_next_instruction(&state);
+        usleep(20000);
     }
 
     destroy_state(&state);

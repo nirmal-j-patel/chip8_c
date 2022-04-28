@@ -2,6 +2,7 @@
 #include <sys/types.h>
 
 #include "SDL_events.h"
+#include "SDL_scancode.h"
 #include "cpu.h"
 #include "instructions.h"
 
@@ -39,6 +40,40 @@ u_int16_t get_last_three_nibbles(u_int16_t instruction)
 
 int execute_next_instruction(State* state)
 {
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+        {
+            return SDL_QUIT;
+        }
+    }
+
+    const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+    const int key_mapping[16] = {
+        SDL_SCANCODE_1,
+        SDL_SCANCODE_2,
+        SDL_SCANCODE_3,
+        SDL_SCANCODE_Q,
+        SDL_SCANCODE_W,
+        SDL_SCANCODE_E,
+        SDL_SCANCODE_A,
+        SDL_SCANCODE_S,
+        SDL_SCANCODE_D,
+        SDL_SCANCODE_Z,
+        SDL_SCANCODE_X,
+        SDL_SCANCODE_C,
+        SDL_SCANCODE_4,
+        SDL_SCANCODE_R,
+        SDL_SCANCODE_F,
+        SDL_SCANCODE_V,
+    };
+    for (int i = 0; i < 16; i++)
+    {
+        state->key_pressed_state[i] = keyboard_state[key_mapping[i]];
+    }
+
     const u_int16_t next_instruction = fetch_next_instruction(state);
 
     u_int8_t nibble1, nibble2, nibble3, nibble4;
@@ -199,50 +234,66 @@ int execute_next_instruction(State* state)
         switch (byte2) {
         // SKP Vx - skip next instruction if key with the value of Vx is pressed
         case 0x9E:
+            if (state->key_pressed_state[state->registers[nibble2]])
+            {
+                skip_next_instruction(state);
+            }
             break;
 
         // SKNP Vx - skip next instruction if key with the value of Vx is not pressed
         case 0xA1:
+            if (!state->key_pressed_state[state->registers[nibble2]])
+            {
+                skip_next_instruction(state);
+            }
             break;
         }
         break;
 
     case 0xF:
         switch (byte2) {
-        //
+        // LD Vx, DT - set Vx = delay timer value
         case 0x07:
+            get_delay_timer_to_register_number(state, nibble2);
             break;
 
         //
         case 0x0A:
             break;
 
-        //
+        // LD DT, Vx - set delay timer = Vx
         case 0x15:
+            set_delay_timer_from_register_number(state, nibble2);
             break;
 
-        //
+        // LD ST, Vx - set sound timer = Vx
         case 0x18:
+            set_sound_timer_from_register_number(state, nibble2);
             break;
 
-        //
+        // ADD I, Vx - set I = I + Vx
         case 0x1E:
+            add_register_number_to_I(state, nibble2);
             break;
 
-        //
+        // LD F, Vx - set I = location of sprite for digit Vx
         case 0x29:
+            set_I_to_register_number_digit_location(state, nibble2);
             break;
 
-        //
+        // LD B, Vx - store BCD representation of Vx in memory locations I, I+1, and I+2
         case 0x33:
+            store_BCD_representation_at_I(state, nibble2);
             break;
 
-        //
+        // LD B, Vx - store BCD representation of Vx in memory locations I, I+1, and I+2
         case 0x55:
+            store_registers_at_I(state, nibble2);
             break;
 
-        //
+        // LD Vx, [I] - read registers V0 through Vx from memory starting at location I
         case 0x65:
+            load_registers_from_I(state, nibble2);
             break;
         }
         break;
@@ -250,16 +301,6 @@ int execute_next_instruction(State* state)
     default:
         printf("Unknown instruction\n");
         break;
-    }
-
-        SDL_Event event;
-
-    while (SDL_PollEvent(&event))
-    {
-        if (event.type == SDL_QUIT)
-        {
-            return SDL_QUIT;
-        }
     }
 
     return 0;

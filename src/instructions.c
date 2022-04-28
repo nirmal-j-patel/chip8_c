@@ -149,6 +149,7 @@ void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
 
 void get_delay_timer_to_register_number(State* state, u_int8_t register_number)
 {
+    state->registers[register_number] = state->DT;
 }
 
 void assign_keypress_value_to_register_number(State* state, u_int8_t register_number)
@@ -157,16 +158,48 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
 
 void set_delay_timer_from_register_number(State* state, u_int8_t register_number)
 {
+    state->DT = state->registers[register_number];
 }
 
 void set_sound_timer_from_register_number(State* state, u_int8_t register_number)
 {
+    state->ST = state->registers[register_number];
 }
 
 void add_register_number_to_I(State* state, u_int8_t register_number)
 {
+    state->I += state->registers[register_number];
 }
 
 void set_I_to_register_number_digit_location(State* state, u_int8_t register_number)
 {
+    const u_int8_t register_value = state->registers[register_number];
+    state->I = state->memory[register_value*5];
+}
+
+void store_BCD_representation_at_I(State *state, u_int8_t register_number)
+{
+    u_int8_t vx_value = state->registers[register_number];
+
+    for (int i = 2; i >= 0; i--)
+    {
+        state->memory[state->I + i] = (vx_value % 10);
+        vx_value /= 10;
+    }
+}
+
+void store_registers_at_I(State *state, u_int8_t register_number)
+{
+    for (int i = 0; i <= register_number; i++)
+    {
+        state->memory[state->I + i] = state->registers[i];
+    }
+}
+
+void load_registers_from_I(State *state, u_int8_t register_number)
+{
+    for (int i = 0; i <= register_number; i++)
+    {
+        state->registers[i] = state->memory[state->I + i];
+    }
 }

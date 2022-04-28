@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <stdbool.h>
 #include <SDL.h>
 
 typedef struct State {
@@ -25,6 +26,7 @@ typedef struct State {
     int scale;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    u_int8_t key_pressed_state[16];
     u_int64_t AccumulatedTime;
 } State;
 
