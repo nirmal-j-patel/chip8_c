@@ -36,7 +36,6 @@ void return_subroutine(State *state)
 {
     state->SP--;
     state->PC = state->stack[state->SP];
-    skip_next_instruction(state);
 }
 
 void skip_next_instruction(State* state)
