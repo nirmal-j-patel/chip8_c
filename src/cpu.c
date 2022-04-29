@@ -257,8 +257,9 @@ int execute_next_instruction(State* state)
             get_delay_timer_to_register_number(state, nibble2);
             break;
 
-        //
+        // LD Vx, K - wait for a key press, store the value of the key in Vx
         case 0x0A:
+            assign_keypress_value_to_register_number(state, nibble2);
             break;
 
         // LD DT, Vx - set delay timer = Vx
