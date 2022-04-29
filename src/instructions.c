@@ -221,7 +221,7 @@ void add_register_number_to_I(State* state, u_int8_t register_number)
 void set_I_to_register_number_digit_location(State* state, u_int8_t register_number)
 {
     const u_int8_t register_value = state->registers[register_number];
-    state->I = state->memory[register_value*5];
+    state->I = register_value * 5;
 }
 
 void store_BCD_representation_at_I(State *state, u_int8_t register_number)
