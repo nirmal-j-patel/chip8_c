@@ -50,7 +50,7 @@ void initialize_game_state(State* state, char* filepath)
     memset(state->key_pressed_state, 0, 16);
     initialize_sdl(state);
 
-    state->AccumulatedTime = 0;
+    state->accumulated_time = 0;
 }
 
 void initialize_sdl(State *state) {

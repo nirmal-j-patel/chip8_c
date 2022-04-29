@@ -174,6 +174,8 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
     };
 
     SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
     if (event.type == SDL_QUIT) {
         SDL_Quit();
         exit(0);
@@ -197,6 +199,7 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
                 return;
             }
         }
+    }
     }
 }
 

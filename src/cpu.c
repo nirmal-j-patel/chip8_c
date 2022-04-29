@@ -3,6 +3,7 @@
 
 #include "SDL_events.h"
 #include "SDL_scancode.h"
+#include "SDL_timer.h"
 #include "cpu.h"
 #include "instructions.h"
 
@@ -40,13 +41,21 @@ u_int16_t get_last_three_nibbles(u_int16_t instruction)
 
 int execute_next_instruction(State* state)
 {
-    SDL_Event event;
+    const u_int64_t current_time = SDL_GetTicks64();
+    state->accumulated_time += current_time - state->last_sync_time;
 
-    while (SDL_PollEvent(&event))
+    const u_int64_t step_time = 1000/60;
+    while (state->accumulated_time >= step_time)
     {
-        if (event.type == SDL_QUIT)
+        state->accumulated_time -= step_time;
+        if (state->DT >0)
         {
-            return SDL_QUIT;
+            state->DT--;
+        }
+
+        if (state->ST > 0)
+        {
+            state->ST--;
         }
     }
 
@@ -302,6 +311,16 @@ int execute_next_instruction(State* state)
     default:
         printf("Unknown instruction\n");
         break;
+    }
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+        {
+            return SDL_QUIT;
+        }
     }
 
     return 0;

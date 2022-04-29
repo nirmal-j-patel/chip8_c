@@ -27,7 +27,9 @@ typedef struct State {
     SDL_Window *window;
     SDL_Renderer *renderer;
     u_int8_t key_pressed_state[16];
-    u_int64_t AccumulatedTime;
+
+    u_int64_t last_sync_time;
+    u_int64_t accumulated_time;
 } State;
 
 void initialize_game_state(State* state, char* filepath);
