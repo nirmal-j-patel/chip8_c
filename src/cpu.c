@@ -61,6 +61,7 @@ int execute_next_instruction(State* state)
 
     const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
     const int key_mapping[16] = {
+        SDL_SCANCODE_X,
         SDL_SCANCODE_1,
         SDL_SCANCODE_2,
         SDL_SCANCODE_3,
@@ -71,7 +72,6 @@ int execute_next_instruction(State* state)
         SDL_SCANCODE_S,
         SDL_SCANCODE_D,
         SDL_SCANCODE_Z,
-        SDL_SCANCODE_X,
         SDL_SCANCODE_C,
         SDL_SCANCODE_4,
         SDL_SCANCODE_R,

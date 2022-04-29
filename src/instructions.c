@@ -155,6 +155,7 @@ void get_delay_timer_to_register_number(State* state, u_int8_t register_number)
 void assign_keypress_value_to_register_number(State* state, u_int8_t register_number)
 {
     const int key_mapping[16] = {
+        SDLK_x,
         SDLK_1,
         SDLK_2,
         SDLK_3,
@@ -165,7 +166,6 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
         SDLK_s,
         SDLK_d,
         SDLK_z,
-        SDLK_x,
         SDLK_c,
         SDLK_4,
         SDLK_r,
@@ -173,33 +173,31 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
         SDLK_v,
     };
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
+    while (true)
     {
-    if (event.type == SDL_QUIT) {
-        SDL_Quit();
-        exit(0);
-    }
-
-    if(event.type == SDL_WINDOWEVENT) {
-        if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-            int width = event.window.data1;
-            int height = event.window.data2;
-        }
-    }
-
-    if (event.type == SDL_KEYDOWN) {
-        int key = event.key.keysym.sym;
-
-        for (int i = 0; i < 16; i++)
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
         {
-            if (key_mapping[i] == key)
+            if (event.type == SDL_QUIT)
             {
-                state->registers[register_number] = i;
-                return;
+                SDL_Quit();
+                exit(0);
+            }
+
+            if (event.type == SDL_KEYDOWN)
+            {
+                int key = event.key.keysym.sym;
+
+                for (int i = 0; i < 16; i++)
+                {
+                    if (key_mapping[i] == key)
+                    {
+                        state->registers[register_number] = i;
+                        return;
+                    }
+                }
             }
         }
-    }
     }
 }
 
