@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     int close = 0;
     while (close != SDL_QUIT) {
         close = execute_next_instruction(&state);
-        usleep(2000);
+        usleep(1000);
     }
 
     destroy_state(&state);
