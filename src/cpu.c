@@ -59,6 +59,8 @@ int execute_next_instruction(State* state)
         }
     }
 
+    state->last_sync_time = current_time;
+
     const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
     const int key_mapping[16] = {
         SDL_SCANCODE_X,
