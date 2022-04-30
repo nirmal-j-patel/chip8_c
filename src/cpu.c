@@ -44,24 +44,21 @@ int execute_next_instruction(State* state)
     const u_int64_t current_time = SDL_GetTicks64();
     state->accumulated_time += current_time - state->last_sync_time;
 
-    const u_int64_t step_time = 1000/60;
-    while (state->accumulated_time >= step_time)
-    {
+    const u_int64_t step_time = 1000 / 60;
+    while (state->accumulated_time >= step_time) {
         state->accumulated_time -= step_time;
-        if (state->DT >0)
-        {
+        if (state->DT > 0) {
             state->DT--;
         }
 
-        if (state->ST > 0)
-        {
+        if (state->ST > 0) {
             state->ST--;
         }
     }
 
     state->last_sync_time = current_time;
 
-    const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+    const Uint8* keyboard_state = SDL_GetKeyboardState(NULL);
     const int key_mapping[16] = {
         SDL_SCANCODE_X,
         SDL_SCANCODE_1,
@@ -80,8 +77,7 @@ int execute_next_instruction(State* state)
         SDL_SCANCODE_F,
         SDL_SCANCODE_V,
     };
-    for (int i = 0; i < 16; i++)
-    {
+    for (int i = 0; i < 16; i++) {
         state->key_pressed_state[i] = keyboard_state[key_mapping[i]];
     }
 
@@ -245,16 +241,14 @@ int execute_next_instruction(State* state)
         switch (byte2) {
         // SKP Vx - skip next instruction if key with the value of Vx is pressed
         case 0x9E:
-            if (state->key_pressed_state[state->registers[nibble2]])
-            {
+            if (state->key_pressed_state[state->registers[nibble2]]) {
                 skip_next_instruction(state);
             }
             break;
 
         // SKNP Vx - skip next instruction if key with the value of Vx is not pressed
         case 0xA1:
-            if (!state->key_pressed_state[state->registers[nibble2]])
-            {
+            if (!state->key_pressed_state[state->registers[nibble2]]) {
                 skip_next_instruction(state);
             }
             break;
@@ -317,10 +311,8 @@ int execute_next_instruction(State* state)
 
     SDL_Event event;
 
-    while (SDL_PollEvent(&event))
-    {
-        if (event.type == SDL_QUIT)
-        {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
             return SDL_QUIT;
         }
     }

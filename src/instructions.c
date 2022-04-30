@@ -33,7 +33,7 @@ void call_subroutine(State* state, u_int16_t address)
     state->PC = address;
 }
 
-void return_subroutine(State *state)
+void return_subroutine(State* state)
 {
     state->SP--;
     state->PC = state->stack[state->SP];
@@ -80,40 +80,30 @@ void manipulate_register_number_using_another_register_number(State* state, u_in
         result = vx_value ^ vy_value;
         break;
 
-    case ADD:
-    {
+    case ADD: {
         result = vx_value + vy_value;
         state->registers[0xF] = (result < vx_value);
-    }   
-        break;
+    } break;
 
-    case SUB:
-    {
+    case SUB: {
         result = vx_value - vy_value;
         state->registers[0xF] = (vx_value >= vy_value);
-    }
-        break;
+    } break;
 
-    case SHR:
-    {
+    case SHR: {
         result = vx_value >> 1;
         state->registers[0xF] = ((vx_value & 0b1) > 0);
-    }
-        break;
+    } break;
 
-    case SUBN:
-    {
+    case SUBN: {
         result = vy_value - vx_value;
         state->registers[0xF] = (vy_value >= vx_value);
-    }
-        break;
+    } break;
 
-    case SHL:
-    {
+    case SHL: {
         result = vx_value << 1;
         state->registers[0xF] = ((vx_value & 0b10000000) > 0);
-    }
-        break;
+    } break;
 
     default:
         printf("Invalid operation");
@@ -153,8 +143,7 @@ void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
         const u_int8_t pixels_to_draw = min(8, 63 - vx_val);
 
         for (int j = 0; j < pixels_to_draw; j++) {
-            if (state->display[current_pixel] == 1 && bits[j] == 1)
-            {
+            if (state->display[current_pixel] == 1 && bits[j] == 1) {
                 state->registers[0xF] = 1;
             }
 
@@ -191,25 +180,19 @@ void assign_keypress_value_to_register_number(State* state, u_int8_t register_nu
         SDLK_v,
     };
 
-    while (true)
-    {
+    while (true) {
         SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
                 SDL_Quit();
                 exit(0);
             }
 
-            if (event.type == SDL_KEYDOWN)
-            {
+            if (event.type == SDL_KEYDOWN) {
                 int key = event.key.keysym.sym;
 
-                for (int i = 0; i < 16; i++)
-                {
-                    if (key_mapping[i] == key)
-                    {
+                for (int i = 0; i < 16; i++) {
+                    if (key_mapping[i] == key) {
                         state->registers[register_number] = i;
                         return;
                     }
@@ -240,29 +223,26 @@ void set_I_to_register_number_digit_location(State* state, u_int8_t register_num
     state->I = register_value * 5;
 }
 
-void store_BCD_representation_at_I(State *state, u_int8_t register_number)
+void store_BCD_representation_at_I(State* state, u_int8_t register_number)
 {
     u_int8_t vx_value = state->registers[register_number];
 
-    for (int i = 2; i >= 0; i--)
-    {
+    for (int i = 2; i >= 0; i--) {
         state->memory[state->I + i] = (vx_value % 10);
         vx_value /= 10;
     }
 }
 
-void store_registers_at_I(State *state, u_int8_t register_number)
+void store_registers_at_I(State* state, u_int8_t register_number)
 {
-    for (int i = 0; i <= register_number; i++)
-    {
+    for (int i = 0; i <= register_number; i++) {
         state->memory[state->I + i] = state->registers[i];
     }
 }
 
-void load_registers_from_I(State *state, u_int8_t register_number)
+void load_registers_from_I(State* state, u_int8_t register_number)
 {
-    for (int i = 0; i <= register_number; i++)
-    {
+    for (int i = 0; i <= register_number; i++) {
         state->registers[i] = state->memory[state->I + i];
     }
 }

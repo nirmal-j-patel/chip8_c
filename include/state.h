@@ -3,12 +3,12 @@
 
 #include "SDL_render.h"
 #include "SDL_video.h"
+#include <SDL.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <stdbool.h>
-#include <SDL.h>
 
 typedef struct State {
     // CHIP8 architecture specific variables
@@ -24,8 +24,8 @@ typedef struct State {
 
     // SDL specific variables
     int scale;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
     u_int8_t key_pressed_state[16];
 
     u_int64_t last_sync_time;
@@ -34,12 +34,12 @@ typedef struct State {
 
 void initialize_game_state(State* state, char* filepath);
 
-void initialize_sdl(State *state);
+void initialize_sdl(State* state);
 
 void load_rom(u_int8_t* memory, char* filepath);
 
-void destroy_state(State *state);
+void destroy_state(State* state);
 
-void repaint_screen(State *state);
+void repaint_screen(State* state);
 
 #endif

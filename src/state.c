@@ -26,7 +26,7 @@ const uint8_t fonts[80] = {
     0xF0, 0x80, 0x80, 0x80, 0xF0, // C
     0xE0, 0x90, 0x90, 0x90, 0xE0, // D
     0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-    0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+    0xF0, 0x80, 0xF0, 0x80, 0x80 // F
 };
 
 void initialize_game_state(State* state, char* filepath)
@@ -53,7 +53,8 @@ void initialize_game_state(State* state, char* filepath)
     state->accumulated_time = 0;
 }
 
-void initialize_sdl(State *state) {
+void initialize_sdl(State* state)
+{
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("error initializing SDL: %s\n", SDL_GetError());
@@ -61,9 +62,9 @@ void initialize_sdl(State *state) {
     }
 
     state->window = SDL_CreateWindow("CHIP-8 Emulator",
-                                       SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED,
-                                       64*state->scale, 32*state->scale, 0);
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        64 * state->scale, 32 * state->scale, 0);
 
     state->renderer = SDL_CreateRenderer(state->window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -85,13 +86,13 @@ void load_rom(u_int8_t* memory, char* filepath)
     fclose(file);
 }
 
-void destroy_state(State *state)
+void destroy_state(State* state)
 {
     SDL_DestroyRenderer(state->renderer);
     SDL_DestroyWindow(state->window);
 }
 
-void repaint_screen(State *state)
+void repaint_screen(State* state)
 {
     SDL_RenderClear(state->renderer);
 
@@ -99,15 +100,15 @@ void repaint_screen(State *state)
 
     for (int row = 0; row < 32; row++) {
         for (int col = 0; col < 64; col++) {
-            rect.x = col*state->scale;
-            rect.y = row*state->scale;
+            rect.x = col * state->scale;
+            rect.y = row * state->scale;
             rect.w = state->scale;
             rect.h = state->scale;
 
             if (state->display[row * 64 + col]) {
-                SDL_SetRenderDrawColor( state->renderer, 255, 255, 255, 255 );
+                SDL_SetRenderDrawColor(state->renderer, 255, 255, 255, 255);
             } else {
-                SDL_SetRenderDrawColor( state->renderer, 0, 0, 0, 255 );
+                SDL_SetRenderDrawColor(state->renderer, 0, 0, 0, 255);
             }
             SDL_RenderFillRect(state->renderer, &rect);
         }

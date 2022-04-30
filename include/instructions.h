@@ -68,12 +68,12 @@ void add_register_number_to_I(State* state, u_int8_t register_number);
 void set_I_to_register_number_digit_location(State* state, u_int8_t register_number);
 
 // Fx33
-void store_BCD_representation_at_I(State *state, u_int8_t register_number);
+void store_BCD_representation_at_I(State* state, u_int8_t register_number);
 
 // Fx55
-void store_registers_at_I(State *state, u_int8_t register_number);
+void store_registers_at_I(State* state, u_int8_t register_number);
 
 // Fx65
-void load_registers_from_I(State *state, u_int8_t register_number);
+void load_registers_from_I(State* state, u_int8_t register_number);
 
 #endif
