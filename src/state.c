@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 
@@ -74,6 +75,11 @@ void load_rom(u_int8_t* memory, char* filepath)
     int max_allowed_rom_size = 4096 - 512;
     FILE* file = fopen(filepath, "rb");
     int file_size = 0;
+
+    if (!file) {
+        printf("Cannot load rom %s\n", filepath);
+        exit(1);
+    }
 
     fseek(file, 0, SEEK_END);
     file_size = ftell(file);
