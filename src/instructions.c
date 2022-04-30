@@ -59,9 +59,9 @@ void add_register_number_value(State* state, u_int8_t register_number, u_int8_t 
 
 void manipulate_register_number_using_another_register_number(State* state, u_int8_t vx, u_int8_t vy, enum RegisterOperation operation)
 {
-    int result = 0;
-    const int vx_value = state->registers[vx];
-    const int vy_value = state->registers[vy];
+    u_int8_t result = 0;
+    const u_int8_t vx_value = state->registers[vx];
+    const u_int8_t vy_value = state->registers[vy];
 
     switch (operation) {
     case ASSIGN:
@@ -81,26 +81,38 @@ void manipulate_register_number_using_another_register_number(State* state, u_in
         break;
 
     case ADD:
-        // TODO: set VF = carry
+    {
         result = vx_value + vy_value;
+        state->registers[0xF] = (result < vx_value);
+    }   
         break;
 
     case SUB:
-        // TODO: set VF = NOT borrow
+    {
         result = vx_value - vy_value;
+        state->registers[0xF] = (vx_value >= vy_value);
+    }
         break;
 
     case SHR:
+    {
         result = vx_value >> 1;
+        state->registers[0xF] = ((vx_value & 0b1) > 0);
+    }
         break;
 
     case SUBN:
-        // TODO: set VF = NOT borrow
+    {
         result = vy_value - vx_value;
+        state->registers[0xF] = (vy_value >= vx_value);
+    }
         break;
 
     case SHL:
+    {
         result = vx_value << 1;
+        state->registers[0xF] = ((vx_value & 0b10000000) > 0);
+    }
         break;
 
     default:
