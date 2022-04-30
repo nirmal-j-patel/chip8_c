@@ -136,10 +136,11 @@ void bitwise_and_value_with_random_byte(State* state, u_int8_t register_number, 
 
 void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
 {
+    state->registers[0xF] = 0;
+
     const u_int8_t vx_val = state->registers[vx] % 64;
     const u_int8_t vy_val = state->registers[vy] % 32;
 
-    // u_int32_t current_pixel = vy_val * 64 + vx_val;
     for (int i = 0; i < sprite_length; i++) {
         u_int32_t current_pixel = (vy_val + i) * 64 + vx_val;
         u_int8_t byte = state->memory[state->I + i];
@@ -152,6 +153,11 @@ void draw(State* state, u_int8_t vx, u_int8_t vy, u_int8_t sprite_length)
         const u_int8_t pixels_to_draw = min(8, 63 - vx_val);
 
         for (int j = 0; j < pixels_to_draw; j++) {
+            if (state->display[current_pixel] == 1 && bits[j] == 1)
+            {
+                state->registers[0xF] = 1;
+            }
+
             state->display[current_pixel++] ^= bits[j];
         }
     }
